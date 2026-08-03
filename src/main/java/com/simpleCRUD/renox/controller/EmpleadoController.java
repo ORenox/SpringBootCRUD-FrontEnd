@@ -5,6 +5,7 @@ import com.simpleCRUD.renox.dto.EmpleadoDTO;
 import com.simpleCRUD.renox.entity.Empleado;
 import com.simpleCRUD.renox.repository.EmpleadoRepository;
 import com.simpleCRUD.renox.service.EmpleadoService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor //para no usar un constructor para empleado service
 @RestController
 @RequestMapping("/api/empleados")
+@CrossOrigin(origins = "http://localhost:3000") // ← Agrega esta línea
 public class EmpleadoController {
     //El Controller maneja las peticiones HTTP y expone nuestra API REST.
     private final EmpleadoService empleadoService;
@@ -42,7 +44,7 @@ public class EmpleadoController {
     //post-crear nuevo empleado
 
     @PostMapping
-    public ResponseEntity<EmpleadoDTO> createEmpleado(@RequestBody EmpleadoDTO empleadoDTO){
+    public ResponseEntity<EmpleadoDTO> createEmpleado(@Valid @RequestBody EmpleadoDTO empleadoDTO){
         Empleado empleado = convertToEntity(empleadoDTO);
         Empleado nuevoEmpleado = empleadoService.save(empleado);
         return ResponseEntity.status(HttpStatus.CREATED).body(convertToDTO(nuevoEmpleado));
@@ -50,7 +52,7 @@ public class EmpleadoController {
 
     //put-actualizar empleado
     @PutMapping("/{id}")
-    public ResponseEntity<EmpleadoDTO> updateEmpleado(@PathVariable Long id, @RequestBody EmpleadoDTO empleadoDTO){
+    public ResponseEntity<EmpleadoDTO> updateEmpleado(@PathVariable Long id, @Valid @RequestBody EmpleadoDTO empleadoDTO){
         try{
             Empleado empleado = convertToEntity(empleadoDTO);
             Empleado empleadoActualizado = empleadoService.update(id,empleado);
