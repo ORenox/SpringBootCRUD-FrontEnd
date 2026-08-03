@@ -17,5 +17,5 @@ public class EmpleadoDTO {
     private String apellido;
     private String email;
     private Double salario;
-    private LocalDate fechaInfreso;
+    private LocalDate fechaIngreso;
 }
